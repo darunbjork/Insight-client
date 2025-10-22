@@ -1,6 +1,6 @@
-import React, { createContext } from 'react';
-import { User } from '../types/models.types';
-import { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
+import { createContext } from 'react';
+import type { User } from '../types/models.types';
+import type { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
 
 // 1. Auth Context Type
 export interface AuthContextType {

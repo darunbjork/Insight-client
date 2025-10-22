@@ -1,10 +1,10 @@
-import React, { useState, useEffect, ReactNode } from 'react';
-import { User } from '../types/models.types';
+import { useState, useEffect, type ReactNode } from 'react';
+import { type User } from '../types/models.types';
 import { authApi } from '../api/auth.api';
-import { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
+import type { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
 import { parseApiError } from '../utils/errorHandler';
 import toast from 'react-hot-toast';
-import { AuthContext, AuthContextType } from './auth.types';
+import { AuthContext, type AuthContextType } from './auth.types';
 
 // 3. Auth Provider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { user: refreshedUser } = await authApi.refresh(); // Tries to use the existing refresh cookie
         setUser(refreshedUser);
         console.log('Session restored successfully.');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (_error) {
         // Refresh failed (e.g., no cookie or refresh token expired)
         setUser(null);
@@ -83,7 +84,3 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
-// Re-export useAuth from its hook file for cleaner import paths
-// (The custom hook is preferred over useContext(AuthContext))
-export { useAuth }; 
