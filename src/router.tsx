@@ -3,23 +3,40 @@ import { Routes, Route } from 'react-router-dom';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Feed } from './pages/Feed';
-// Note: We'll implement ProtectedRoute on Day 4, but for now, we use public routes
-// import { ProtectedRoute } from './components/auth/ProtectedRoute'; 
+import { Profile } from './pages/Profile'; // New import
+import { ProtectedRoute } from './components/auth/ProtectedRoute'; // New import
 
 const Router: React.FC = () => {
   return (
     <Routes>
+      {/* PUBLIC ROUTES */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       
-      {/* For Day 2, all routes are public. We'll wrap them in ProtectedRoute on Day 4 */}
-      <Route path="/" element={<Feed />} />
-      <Route path="/profile" element={
-        <div className="text-center p-10">
-          Profile Page - Coming Soon (Day 5)
-        </div>
+      {/* PROTECTED ROUTES */}
+      {/* All routes needing authentication are wrapped */}
+      
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Feed />
+        </ProtectedRoute>
       } />
       
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
+      } />
+      
+      {/* POST DETAIL and other future routes will go here */}
+      <Route path="/posts/:id" element={
+        <ProtectedRoute>
+          {/* PostDetail component (Day 8) */}
+          <div className="text-center p-10">Post Detail Page (Protected)</div>
+        </ProtectedRoute>
+      } />
+      
+      {/* CATCH ALL */}
       <Route path="*" element={
         <div className="text-center p-10">
           <h1 className="text-4xl font-bold">404 - Not Found</h1>
