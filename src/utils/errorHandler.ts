@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ApiError } from '../types/api.types';
+import type { ApiError } from '../types/api.types';
 
 // A mapping of backend error codes to user-facing, friendly messages
 const ERROR_MESSAGES: Record<string, string> = {
