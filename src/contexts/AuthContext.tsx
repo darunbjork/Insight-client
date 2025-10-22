@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode, useCallback } from 'react'; // Added useCallback
 import { type User } from '../types/models.types';
 import { authApi } from '../api/auth.api';
 import type { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
@@ -11,6 +11,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Use useCallback to prevent unnecessary re-creation of this function
+  const safeLogout = useCallback(async () => {
+    try {
+      await authApi.logout();
+    } catch (error) {
+      console.error("Logout API failed, continuing client-side clear:", error);
+    } finally {
+      setUser(null);
+      // We could clear React Query cache here, but often better done with the queryClient instance if needed
+      toast.success('You have been logged out.');
+    }
+  }, []);
+  
   /**
    * 🔄 Session Restoration Pattern
    * Problem Solved: Keeps the user logged in across tab closes and page refreshes.
@@ -48,16 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     toast.success(`Account created! Welcome, ${registeredUser.username}!`);
   };
 
-  const logout = async () => {
-    try {
-      await authApi.logout();
-      setUser(null);
-      toast.success('You have been logged out.');
-    } catch (error) {
-      toast.error(parseApiError(error));
-    }
-  };
-  
   const updateProfile = async (payload: UpdateProfilePayload) => {
     try {
       const { user: updatedUser } = await authApi.updateProfile(payload);
@@ -69,12 +72,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // 2. Token Refresh Logic Finalization (Runs once on mount)
+  useEffect(() => {
+    // We attach the interceptor outside of React and rely on `authApi.refresh()`
+    // which uses the underlying HttpOnly cookie.
+    
+    // We must ensure the interceptor is robustly implemented in client.ts
+    
+    // For this specific architecture (HttpOnly cookies + axios interceptors + window.location.href), 
+    // we don't need to pass the setUser/safeLogout function into the interceptor 
+    // because the forced redirect on failure is the most reliable clean state.
+
+    // If we used a global state manager (Zustand) we could pass the store action here.
+    
+  }, [safeLogout]); // The interceptor logic is entirely self-contained in client.ts
+
   const contextValue: AuthContextType = {
     user,
     isLoading,
     login,
     register,
-    logout,
+    logout: safeLogout,
     updateProfile,
   };
 
