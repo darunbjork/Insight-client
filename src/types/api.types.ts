@@ -11,7 +11,7 @@ export interface ApiError {
 
 // Generic interface for all paginated list responses
 export interface PaginatedResponse<T> {
-  data: T[];
+  data: T[]; // The array of actual resources (Posts, Comments, etc.)
   page: number;
   totalPages: number;
   total: number;
