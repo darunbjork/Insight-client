@@ -1,23 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { User } from '../types/models.types';
 import { authApi } from '../api/auth.api';
 import { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
 import { parseApiError } from '../utils/errorHandler';
 import toast from 'react-hot-toast';
-
-// 1. Auth Context Type
-export interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (payload: LoginPayload) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
-  logout: () => Promise<void>;
-  updateProfile: (payload: UpdateProfilePayload) => Promise<void>;
-}
-
-// 2. Create Context
-// We assert the type as undefined initially, which is handled by the useAuth hook check
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext, AuthContextType } from './auth.types';
 
 // 3. Auth Provider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -36,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const { user: refreshedUser } = await authApi.refresh(); // Tries to use the existing refresh cookie
         setUser(refreshedUser);
         console.log('Session restored successfully.');
-      } catch (error) {
+      } catch (_error) {
         // Refresh failed (e.g., no cookie or refresh token expired)
         setUser(null);
         // Note: The /login redirect is handled by the API client interceptor if a network call fails,
@@ -49,24 +36,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []); // Run only once on component mount
 
   const login = async (payload: LoginPayload) => {
-    try {
-      const { user: loggedInUser } = await authApi.login(payload);
-      setUser(loggedInUser);
-      toast.success(`Welcome back, ${loggedInUser.username}!`);
-    } catch (error) {
-      // Error handled globally via QueryClient or specifically by forms
-      throw error; // Re-throw to allow form component to catch and handle submission state
-    }
+    const { user: loggedInUser } = await authApi.login(payload);
+    setUser(loggedInUser);
+    toast.success(`Welcome back, ${loggedInUser.username}!`);
   };
   
   const register = async (payload: RegisterPayload) => {
-    try {
-      const { user: registeredUser } = await authApi.register(payload);
-      setUser(registeredUser);
-      toast.success(`Account created! Welcome, ${registeredUser.username}!`);
-    } catch (error) {
-      throw error;
-    }
+    const { user: registeredUser } = await authApi.register(payload);
+    setUser(registeredUser);
+    toast.success(`Account created! Welcome, ${registeredUser.username}!`);
   };
 
   const logout = async () => {

@@ -1,9 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
-import { AuthSuccessResponse, ApiError } from '../types/api.types';
 import { authApi } from './auth.api'; // Import a circular dependency - resolved at runtime
 
 // We use an empty interface for our typed Axios instance to allow us to attach 
 // custom properties if needed in the future, while keeping the standard Axios methods.
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TypedAxiosInstance extends AxiosInstance {}
 
 // ⚠️ CRITICAL: Must be set globally in Axios for HttpOnly cookies to be sent

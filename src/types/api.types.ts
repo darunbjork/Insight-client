@@ -1,5 +1,7 @@
 // types/api.types.ts
 
+import type { User } from "./models.types";
+
 // Standardized structure for all non-2xx responses from the backend
 export interface ApiError {
   status: 'fail';

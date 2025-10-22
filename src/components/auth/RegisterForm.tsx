@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../hooks/useAuth';
-import { RegisterPayload } from '../../types/api.types';
+import type { RegisterPayload } from '../../types/api.types';
 import { parseApiError } from '../../utils/errorHandler';
 import toast from 'react-hot-toast';
 

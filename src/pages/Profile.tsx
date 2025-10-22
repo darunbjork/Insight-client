@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 
 export const Profile: React.FC = () => {
-  const { user, updateProfile, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   if (!user) {
     // This case should ideally not be hit because the route is protected,

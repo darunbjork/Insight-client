@@ -5,7 +5,6 @@ import {
   AuthSuccessResponse, 
   UpdateProfilePayload 
 } from '../types/api.types';
-import { User } from '../types/models.types';
 
 // The authentication-specific API methods.
 // We return the response.data directly to simplify hook consumption.
