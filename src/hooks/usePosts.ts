@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { postsApi } from '../api/posts.api';
 import { Post } from '../types/models.types';
 import { CreatePostPayload, PaginatedResponse } from '../types/api.types';
@@ -17,7 +17,7 @@ export const usePosts = (page: number, limit: number = 10) => {
     queryKey: [POSTS_QUERY_KEY, page], 
     queryFn: () => postsApi.getAll(page, limit),
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
-    keepPreviousData: true,   // Keeps old page visible while new page loads (better UX)
+    placeholderData: keepPreviousData,
   });
 };
 
