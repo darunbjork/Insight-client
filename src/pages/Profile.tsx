@@ -1,52 +1,41 @@
 import React from 'react';
 import { Layout } from '../components/layout/Layout';
 import { useAuth } from '../hooks/useAuth';
+import { ProfileForm } from '../components/profile/ProfileForm'; // New import
+import { AvatarUpload } from '../components/profile/AvatarUpload'; // New import
 import { Button } from '../components/ui/Button';
 
 export const Profile: React.FC = () => {
   const { user, logout } = useAuth();
 
   if (!user) {
-    // This case should ideally not be hit because the route is protected,
-    // but a safety check is always good practice.
-    return (
-      <Layout>
-        <div className="p-8 text-center text-red-500">Access Denied.</div>
-      </Layout>
-    );
+    // Should be caught by ProtectedRoute, but good fallback
+    return null;
   }
-  
-  const handleUpdate = async () => {
-    // Placeholder for actual update logic in Day 5
-    // For now, let's just log a message
-    console.log('Update logic triggered (Day 5)');
-  };
 
   return (
     <Layout>
-      <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">My Profile</h1>
+      <div className="max-w-3xl mx-auto space-y-10">
+        <h1 className="text-4xl font-bold text-gray-900 border-b pb-4">Account Settings</h1>
         
-        <div className="space-y-4">
-          <p className="text-lg">
-            <span className="font-semibold text-gray-600">Username:</span> {user.username}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold text-gray-600">Email:</span> {user.email}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold text-gray-600">Member Since:</span> {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+        {/* AVATAR UPLOAD SECTION */}
+        <section className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Profile Picture</h2>
+          <AvatarUpload />
+        </section>
+
+        {/* PROFILE DETAILS SECTION */}
+        <section className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">User Details</h2>
+          <ProfileForm />
+        </section>
         
-        <div className="mt-8 flex justify-end space-x-4">
-          <Button variant="secondary" onClick={handleUpdate}>
-            Edit Profile (Day 5)
-          </Button>
+        {/* LOGOUT SECTION */}
+        <section className="flex justify-end p-4 border-t pt-6">
           <Button variant="danger" onClick={logout}>
-            Logout
+            Logout of ThoughtStream
           </Button>
-        </div>
+        </section>
       </div>
     </Layout>
   );
