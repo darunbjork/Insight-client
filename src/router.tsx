@@ -6,6 +6,8 @@ import { Feed } from './pages/Feed';
 import { Profile } from './pages/Profile'; // New import
 import { ProtectedRoute } from './components/auth/ProtectedRoute'; // New import
 
+import { PostDetail } from './pages/PostDetail';
+
 const Router: React.FC = () => {
   return (
     <Routes>
@@ -14,8 +16,6 @@ const Router: React.FC = () => {
       <Route path="/register" element={<Register />} />
       
       {/* PROTECTED ROUTES */}
-      {/* All routes needing authentication are wrapped */}
-      
       <Route path="/" element={
         <ProtectedRoute>
           <Feed />
@@ -28,11 +28,10 @@ const Router: React.FC = () => {
         </ProtectedRoute>
       } />
       
-      {/* POST DETAIL and other future routes will go here */}
+      {/* NEW: Post Detail Route (Protected) */}
       <Route path="/posts/:id" element={
         <ProtectedRoute>
-          {/* PostDetail component (Day 8) */}
-          <div className="text-center p-10">Post Detail Page (Protected)</div>
+          <PostDetail />
         </ProtectedRoute>
       } />
       

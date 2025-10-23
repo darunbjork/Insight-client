@@ -45,6 +45,11 @@ export interface UpdateProfilePayload {
   email?: string;
 }
 
+export interface CreateCommentPayload {
+  content: string;
+  postId: string;
+}
+
 // --- Responses ---
 // A typical successful response from an auth endpoint after login or refresh
 export interface AuthSuccessResponse {
