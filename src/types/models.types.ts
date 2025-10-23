@@ -28,18 +28,15 @@ export interface Post {
 }
 
 export interface Comment {
-  _id: string;
+  id: string;
   content: string;
+  postId: string;
   author: {
     id: string;
     username: string;
     avatar?: string;
   };
-  postId: string;
-  likeCount: number;
-  isLikedByCurrentUser?: boolean;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface Like {
