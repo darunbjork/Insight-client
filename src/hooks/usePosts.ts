@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 // The key for our posts list query
 const POSTS_QUERY_KEY = 'posts';
+const POST_DETAIL_QUERY_KEY = 'post';
 
 /**
  * 🚀 usePosts: Handles fetching the paginated post feed.
@@ -40,8 +41,76 @@ export const useCreatePost = () => {
 };
 
 /**
- * 🗑️ useDeletePost: Handles deleting a post.
- * Solves: State mutation, automatic cache invalidation.
+ * 💖 useLikePost: Handles the like/unlike toggle and UI refresh.
+ */
+export const useLikePost = (postId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    // We assume the API endpoint handles the toggle logic
+    mutationFn: () => postsApi.toggleLike(postId),
+    
+    // Optimistic Update: Assume success and update UI instantly
+    onMutate: async () => {
+      // 1. Cancel any outgoing refetches for the relevant queries
+      await queryClient.cancelQueries({ queryKey: [POSTS_QUERY_KEY] });
+      await queryClient.cancelQueries({ queryKey: [POST_DETAIL_QUERY_KEY, postId] });
+      
+      // 2. Snapshot the previous data for rollback
+      const previousPosts = queryClient.getQueryData<PaginatedResponse<Post>>([POSTS_QUERY_KEY]);
+      const previousDetail = queryClient.getQueryData<Post>([POST_DETAIL_QUERY_KEY, postId]);
+
+      // 3. Optimistically update the feed list (find and toggle liked status)
+      queryClient.setQueryData<PaginatedResponse<Post>>([POSTS_QUERY_KEY], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          data: old.data.map(p => 
+            p.id === postId ? { 
+                ...p, 
+                isLiked: !p.isLiked, // Toggle liked state
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1 
+            } : p
+          ),
+        };
+      });
+
+      // 4. Optimistically update the detail view
+      queryClient.setQueryData<Post>([POST_DETAIL_QUERY_KEY, postId], (old) => {
+        if (!old) return old;
+        return { 
+          ...old, 
+          isLiked: !old.isLiked,
+          likeCount: old.isLiked ? old.likeCount - 1 : old.likeCount + 1
+        };
+      });
+      
+      // Return the rollback function (context)
+      return { previousPosts, previousDetail };
+    },
+    
+    // If the mutation fails, roll back the cache
+    onError: (err, variables, context) => {
+      toast.error("Failed to update like status.");
+      if (context?.previousPosts) {
+        queryClient.setQueryData([POSTS_QUERY_KEY], context.previousPosts);
+      }
+      if (context?.previousDetail) {
+        queryClient.setQueryData([POST_DETAIL_QUERY_KEY, postId], context.previousDetail);
+      }
+    },
+    
+    // Always revalidate to ensure the server state matches the client
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [POSTS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [POST_DETAIL_QUERY_KEY, postId] });
+    },
+  });
+};
+
+
+/**
+ * 🗑️ useDeletePost: Handles deletion of a post.
  */
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
@@ -49,8 +118,9 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: (id: string) => postsApi.delete(id),
     onSuccess: () => {
-      // Invalidate the posts feed to remove the deleted post and refetch list
+      // Invalidate both the feed and the detail view
       queryClient.invalidateQueries({ queryKey: [POSTS_QUERY_KEY] });
+      // Note: Detail view of a deleted post will naturally lead to a 404/redirect
       toast.success('Post deleted successfully!');
     },
   });

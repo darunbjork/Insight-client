@@ -86,7 +86,9 @@ export const PostDetail: React.FC = () => {
             <p className="text-lg text-gray-800 whitespace-pre-wrap">{post.content}</p>
           </div>
           
-          <div className="flex justify-end pt-4 border-t text-sm text-gray-500">
+          <div className="flex justify-between items-center pt-4 border-t">
+            {/* NEW: Post Actions Component */}
+            <PostActions post={post} isDetailPage={true} /> 
             <span>{post.commentCount || 0} Comments</span>
           </div>
         </div>
