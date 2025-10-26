@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react';
+import { type InputHTMLAttributes, forwardRef } from 'react';
 
 // Combined props for type safety and forwarding ref for React Hook Form
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

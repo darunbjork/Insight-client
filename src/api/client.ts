@@ -6,7 +6,7 @@ import { authApi } from './auth.api'; // Import a circular dependency - resolved
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TypedAxiosInstance extends AxiosInstance {}
 
-const apiClient: TypedAxiosInstance = axios.create({
+export const apiClient: TypedAxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true, // CRITICAL for HttpOnly cookies
   headers: {
@@ -55,6 +55,11 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
+    // If the request is for the refresh endpoint, just return the error
+    if (originalRequest.url?.includes('/auth/refresh')) {
+      return Promise.reject(error);
+    }
     
     // 1. Standard 401 Check: Unauthorized and not already retried
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {

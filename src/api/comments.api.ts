@@ -1,6 +1,7 @@
-import apiClient from './client';
-import { Comment } from '../types/models.types';
-import { PaginatedResponse, CreateCommentPayload } from '../types/api.types';
+import { apiClient } from './client';
+import type { Comment } from '../types/models.types';
+import type { PaginatedResponse, CreateCommentPayload } from '../types/api.types';
+import type { AxiosResponse } from 'axios';
 
 /**
  * 💡 Comments API Module
@@ -9,14 +10,14 @@ import { PaginatedResponse, CreateCommentPayload } from '../types/api.types';
 export const commentsApi = {
   // GET /api/v1/posts/:postId/comments
   getPostComments: (postId: string, page: number, limit: number = 10) =>
-    apiClient.get<PaginatedResponse<Comment>>(`/posts/${postId}/comments`, { 
-      params: { page, limit } 
-    }).then(res => res.data),
+    apiClient.get<PaginatedResponse<Comment>>(`/posts/${postId}/comments`, {
+      params: { page, limit }
+    }).then((res: AxiosResponse<PaginatedResponse<Comment>>) => res.data),
 
   // POST /api/v1/comments (assuming a flat route for creation)
-  // The postId is included in the payload, but the backend may also infer it from a nested route. 
+  // The postId is included in the payload, but the backend may also infer it from a nested route.
   // We'll use a flat route here for simplicity, matching the payload.
-  create: (payload: CreateCommentPayload) => 
+  create: (payload: CreateCommentPayload) =>
     apiClient.post<{ comment: Comment }>('/comments', payload)
-      .then(res => res.data.comment),
+      .then((res: AxiosResponse<{ comment: Comment }>) => res.data.comment),
 };

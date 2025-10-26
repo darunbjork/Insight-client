@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from ' @hookform/resolvers/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useCreatePost } from '../../hooks/usePosts';
 import { useAuth } from '../../hooks/useAuth';
 import { useImageInput } from '../../hooks/useImageInput';
-import { CreatePostPayload } from '../../types/api.types';
+import type { CreatePostPayload } from '../../types/api.types';
 import toast from 'react-hot-toast';
 
 // 1. Zod Schema
@@ -32,7 +32,7 @@ export const CreatePostForm: React.FC = () => {
       toast.error("You must be logged in to post.");
       return;
     }
-    
+
     // Combine form data and file data into the final payload
     const payload: CreatePostPayload = {
       ...data,
@@ -41,10 +41,10 @@ export const CreatePostForm: React.FC = () => {
 
     try {
       await createMutation.mutateAsync(payload);
-      
+
       // On success: Clear the form and the file input
       reset();
-      clearFile(); 
+      clearFile();
     } catch (error) {
       // Error handled by global handler
       console.error(error);
@@ -71,13 +71,13 @@ export const CreatePostForm: React.FC = () => {
           {...register('content')}
         />
         {errors.content && <p className="mt-1 text-sm text-red-500" role="alert">{errors.content.message}</p>}
-        
+
         {/* IMAGE UPLOAD SECTION */}
         <div className="flex items-center space-x-4">
           <label className="block text-sm font-medium text-gray-700">Image:</label>
-          <input 
-            type="file" 
-            accept="image/*" 
+          <input
+            type="file"
+            accept="image/*"
             onChange={handleFileChange}
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
@@ -87,15 +87,15 @@ export const CreatePostForm: React.FC = () => {
             </Button>
           )}
         </div>
-        
+
         {preview && (
           <div className="mt-2">
             <img src={preview} alt="Post preview" className="max-h-60 rounded-lg object-cover w-full" />
           </div>
         )}
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           className="w-full"
           isLoading={isSubmitting || createMutation.isPending}
         >

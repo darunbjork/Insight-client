@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { postsApi } from '../api/posts.api';
-import { Post } from '../types/models.types';
-import { CreatePostPayload, PaginatedResponse } from '../types/api.types';
+import type { Post } from '../types/models.types';
+import type { CreatePostPayload, PaginatedResponse } from '../types/api.types';
 import toast from 'react-hot-toast';
 
 // The key for our posts list query

@@ -1,6 +1,6 @@
-import apiClient from './client';
-import { Post } from '../types/models.types';
-import { PaginatedResponse, CreatePostPayload } from '../types/api.types';
+import { apiClient } from './client';
+import type { Post } from '../types/models.types';
+import type { PaginatedResponse, CreatePostPayload } from '../types/api.types';
 
 // Concrete type for the paginated post feed response
 export interface PostsFeedResponse extends PaginatedResponse<Post> {

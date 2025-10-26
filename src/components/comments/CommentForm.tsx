@@ -67,7 +67,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ postId }) => {
         <div className="flex justify-end">
           <Button 
             type="submit" 
-            isLoading={isSubmitting || createMutation.isLoading}
+            isLoading={isSubmitting || createMutation.isPending}
           >
             Post Comment
           </Button>

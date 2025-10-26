@@ -33,7 +33,7 @@ export const Profile: React.FC = () => {
         {/* LOGOUT SECTION */}
         <section className="flex justify-end p-4 border-t pt-6">
           <Button variant="danger" onClick={logout}>
-            Logout of ThoughtStream
+            Logout of Insight
           </Button>
         </section>
       </div>

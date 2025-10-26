@@ -13,13 +13,12 @@ export interface Post {
   _id: string;
   title: string;
   content: string;
-  image?: string;
+  imageUrl?: string;
   author: {
     id: string;
     username: string;
     avatar?: string;
-  };
-  likeCount: number;
+  };  likeCount: number;
   commentCount: number;
   // This field is client-side computed, but useful to include in the Post type
   isLikedByCurrentUser?: boolean; 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Comment } from '../../types/models.types';
+import type { Comment } from '../../types/models.types';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/dateFormatter';
 

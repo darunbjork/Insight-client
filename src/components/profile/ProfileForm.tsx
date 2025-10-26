@@ -6,7 +6,7 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { useUpdateProfile } from '../../hooks/useUser';
-import { UpdateProfilePayload } from '../../types/api.types';
+import type { UpdateProfilePayload } from '../../types/api.types';
 import toast from 'react-hot-toast';
 
 // 1. Zod Schema

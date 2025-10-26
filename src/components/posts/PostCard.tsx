@@ -1,5 +1,5 @@
 import React from 'react';
-import { Post } from '../../types/models.types';
+import type { Post } from '../../types/models.types';
 import { Link } from 'react-router-dom';
 import { formatDate } from '../../utils/dateFormatter';
 
@@ -14,10 +14,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-100 space-y-4">
       
-      {post.image && (
+      {post.imageUrl && (
         <div className="mb-4">
           <img 
-            src={post.image} 
+            src={post.imageUrl} 
             alt={post.title} 
             className="w-full h-64 object-cover rounded-lg"
           />

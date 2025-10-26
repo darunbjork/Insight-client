@@ -1,42 +1,43 @@
-import apiClient from './client';
-import { 
-  LoginPayload, 
-  RegisterPayload, 
-  AuthSuccessResponse, 
-  UpdateProfilePayload 
+import { apiClient } from './client';
+import type {
+  LoginPayload,
+  RegisterPayload,
+  AuthSuccessResponse,
+  UpdateProfilePayload
 } from '../types/api.types';
+import type { AxiosResponse } from 'axios';
 
 // The authentication-specific API methods.
 // We return the response.data directly to simplify hook consumption.
 export const authApi = {
   // POST /api/v1/auth/register
-  register: (payload: RegisterPayload) => 
-    apiClient.post<AuthSuccessResponse>('/auth/register', payload).then(res => res.data),
+  register: (payload: RegisterPayload) =>
+    apiClient.post<AuthSuccessResponse>('/auth/register', payload).then((res: AxiosResponse<AuthSuccessResponse>) => res.data),
 
   // POST /api/v1/auth/login
-  login: (payload: LoginPayload) => 
-    apiClient.post<AuthSuccessResponse>('/auth/login', payload).then(res => res.data),
+  login: (payload: LoginPayload) =>
+    apiClient.post<AuthSuccessResponse>('/auth/login', payload).then((res: AxiosResponse<AuthSuccessResponse>) => res.data),
 
   // GET /api/v1/auth/refresh
   // This is used by the interceptor AND the AuthContext for session restoration.
-  refresh: () => 
-    apiClient.get<AuthSuccessResponse>('/auth/refresh').then(res => res.data),
+  refresh: () =>
+    apiClient.get<AuthSuccessResponse>('/auth/refresh').then((res: AxiosResponse<AuthSuccessResponse>) => res.data),
 
   // POST /api/v1/auth/logout
   // Note: The backend clears the HttpOnly cookie, no client-side action needed beyond the call.
-  logout: () => 
-    apiClient.post<void>('/auth/logout').then(res => res.data),
-    
+  logout: () =>
+    apiClient.post<void>('/auth/logout').then((res: AxiosResponse<void>) => res.data),
+
   // PUT /api/v1/auth/profile
-  updateProfile: (payload: UpdateProfilePayload) => 
-    apiClient.put<AuthSuccessResponse>('/auth/profile', payload).then(res => res.data),
-    
+  updateProfile: (payload: UpdateProfilePayload) =>
+    apiClient.put<AuthSuccessResponse>('/auth/profile', payload).then((res: AxiosResponse<AuthSuccessResponse>) => res.data),
+
   // PUT /api/v1/auth/avatar (multipart/form-data)
-  uploadAvatar: (formData: FormData) => 
+  uploadAvatar: (formData: FormData) =>
     apiClient.put<AuthSuccessResponse>('/auth/avatar', formData, {
-      headers: { 
+      headers: {
         // Axios sets this automatically for FormData, but being explicit is good practice
-        'Content-Type': 'multipart/form-data' 
+        'Content-Type': 'multipart/form-data'
       },
-    }).then(res => res.data),
+    }).then((res: AxiosResponse<AuthSuccessResponse>) => res.data),
 };

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { authApi } from '../api/auth.api';
-import { User } from '../types/models.types';
-import { UpdateProfilePayload } from '../types/api.types';
+import type { User } from '../types/models.types';
+import type { UpdateProfilePayload } from '../types/api.types';
 import { useAuth } from './useAuth';
 import toast from 'react-hot-toast';
 
@@ -16,7 +16,7 @@ export const useUpdateProfile = () => {
     onSuccess: (data) => {
       // The authApi.updateProfile returns the updated user object.
       // We rely on the AuthContext's updateProfile function to handle the setUser(updatedUser) logic.
-      updateProfile(data); 
+      updateProfile(data.user); 
       // Note: The success toast is already handled inside the AuthContext's updateProfile
     },
     // onError is handled globally in main.tsx QueryClient configuration
@@ -41,7 +41,7 @@ export const useUploadAvatar = () => {
     },
     onSuccess: (updatedUser: User) => {
       // Update the AuthContext state with the new user object (containing the new avatar URL)
-      updateProfile({ user: updatedUser }); 
+      updateProfile(updatedUser); 
       toast.success('Avatar uploaded successfully!');
     },
     // onError is handled globally in main.tsx

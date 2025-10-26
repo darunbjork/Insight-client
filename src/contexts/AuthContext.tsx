@@ -6,8 +6,10 @@ import { parseApiError } from '../utils/errorHandler';
 import toast from 'react-hot-toast';
 import { AuthContext, type AuthContextType } from './auth.types';
 
+import { type NavigateFunction } from 'react-router-dom';
+
 // 3. Auth Provider Component
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({ children, navigate }: { children: ReactNode, navigate: NavigateFunction }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,6 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } catch (_error) {
         // Refresh failed (e.g., no cookie or refresh token expired)
         setUser(null);
+        console.log('Redirecting to login page...');
+        navigate('/login');
         // Note: The /login redirect is handled by the API client interceptor if a network call fails,
         // but here we just clear the state.
       } finally {
@@ -47,18 +51,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     };
     initAuth();
-  }, []); // Run only once on component mount
+  }, [navigate]); // Run only once on component mount
 
   const login = async (payload: LoginPayload) => {
     const { user: loggedInUser } = await authApi.login(payload);
     setUser(loggedInUser);
     toast.success(`Welcome back, ${loggedInUser.username}!`);
+    navigate('/');
   };
   
   const register = async (payload: RegisterPayload) => {
-    const { user: registeredUser } = await authApi.register(payload);
-    setUser(registeredUser);
-    toast.success(`Account created! Welcome, ${registeredUser.username}!`);
+    await authApi.register(payload);
+    toast.success('Account created! Please login.');
+    navigate('/login');
   };
 
   const updateProfile = async (payload: UpdateProfilePayload) => {
@@ -94,6 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     register,
     logout: safeLogout,
     updateProfile,
+    navigate,
   };
 
   return (

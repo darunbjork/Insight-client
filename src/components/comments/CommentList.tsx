@@ -20,14 +20,14 @@ export const CommentList: React.FC = () => {
     isFetching, 
     isError, 
     error, 
-    isPreviousData 
+    isPlaceholderData 
   } = usePostComments(postId!, page, limit); // `postId` is guaranteed by the router structure
 
   const comments = data?.data || [];
   const totalPages = data?.totalPages || 1;
   const totalComments = data?.total || 0;
 
-  if (isLoading && !isPreviousData) {
+  if (isLoading && !isPlaceholderData) {
     return (
       <div className="flex justify-center p-10">
         <Spinner />

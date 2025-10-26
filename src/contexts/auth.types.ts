@@ -2,6 +2,8 @@ import { createContext } from 'react';
 import type { User } from '../types/models.types';
 import type { LoginPayload, RegisterPayload, UpdateProfilePayload } from '../types/api.types';
 
+import type { NavigateFunction } from 'react-router-dom';
+
 // 1. Auth Context Type
 export interface AuthContextType {
   user: User | null;
@@ -10,6 +12,7 @@ export interface AuthContextType {
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (payload: UpdateProfilePayload) => Promise<void>;
+  navigate: NavigateFunction;
 }
 
 // 2. Create Context

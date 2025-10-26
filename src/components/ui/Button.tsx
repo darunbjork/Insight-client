@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { type ButtonHTMLAttributes } from 'react';
+import { Spinner } from './Spinner';
 
 // Type safety for props
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

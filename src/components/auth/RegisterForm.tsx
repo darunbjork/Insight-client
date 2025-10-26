@@ -11,9 +11,9 @@ import toast from 'react-hot-toast';
 
 // 1. Zod Schema for Client-side Validation
 const registerSchema = z.object({
-  username: z.string().min(3, 'Username required (min 3 chars)'),
+  username: z.string().min(3, 'Username required (min 3 chars)').max(30, 'Username cannot exceed 30 characters'),
   email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters').max(128, 'Password cannot exceed 128 characters').regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
