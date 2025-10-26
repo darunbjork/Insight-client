@@ -48,8 +48,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
       </p>
       
       <div className="flex justify-between items-center text-sm text-gray-500 border-t pt-4">
-        <span>{post.commentCount || 0} Comments</span>
-        {/* Future: Likes/Actions components here */}
+        {/* NEW: Post Actions Component */}
+        <PostActions post={post} /> 
       </div>
     </div>
   );

@@ -51,4 +51,9 @@ export const postsApi = {
   // DELETE /api/v1/posts/:id
   delete: (id: string) =>
     apiClient.delete<void>(`/posts/${id}`).then(res => res.data),
+
+  // NEW: POST /api/v1/posts/:id/like
+  toggleLike: (postId: string) => 
+    apiClient.post<{ post: Post }>(`/posts/${postId}/like`)
+      .then(res => res.data.post),
 };
