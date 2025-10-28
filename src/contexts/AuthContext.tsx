@@ -34,31 +34,31 @@ export const AuthProvider = ({ children, navigate }: { children: ReactNode, navi
    */
   useEffect(() => {
     const initAuth = async () => {
+      const currentPath = window.location.pathname;
+      if (currentPath === '/login' || currentPath === '/register') {
+        setIsLoading(false);
+        return;
+      }
+
       if (user) {
         setIsLoading(false);
         return;
       }
+
       try {
-        const { user: refreshedUser } = await authApi.refresh(); // Tries to use the existing refresh cookie
+        const { user: refreshedUser } = await authApi.refresh();
         setUser(refreshedUser);
         console.log('Session restored successfully.');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (_error) {
-        // Refresh failed (e.g., no cookie or refresh token expired)
+      } catch {
         setUser(null);
-        const currentPath = window.location.pathname;
-        if (currentPath !== '/login' && currentPath !== '/register') {
-          console.log('Redirecting to login page...');
-          navigate('/login');
-        }
-        // Note: The /login redirect is handled by the API client interceptor if a network call fails,
-        // but here we just clear the state.
+        console.log('Redirecting to login page...');
+        navigate('/login');
       } finally {
         setIsLoading(false);
       }
     };
     initAuth();
-  }, [navigate, user]); // Run only once on component mount
+  }, [navigate, user]);
 
   const login = async (payload: LoginPayload) => {
     const { user: loggedInUser } = await authApi.login(payload);

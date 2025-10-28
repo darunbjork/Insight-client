@@ -56,20 +56,15 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // If the request is for the refresh endpoint, just return the error
-    if (originalRequest.url?.includes('/auth/refresh')) {
-      return Promise.reject(error);
+    // CRITICAL FAILURE POINT: If refresh fails, forcefully reset
+    if (originalRequest.url?.includes('/auth/refresh') && error.response?.status === 401) {
+          console.error("Session irrecoverably lost. Refresh token is expired or invalid.");
+          window.location.href = '/login'; // <-- This is the final, aggressive reset
+          return Promise.reject(error);
     }
     
     // 1. Standard 401 Check: Unauthorized and not already retried
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-      
-      // If the 401 is from the /auth/refresh endpoint itself, we give up immediately
-      if (originalRequest.url?.includes('/auth/refresh')) {
-          console.log("Refresh token failed during 401 interception. Forcing logout.");
-          window.location.href = '/login'; // Aggressive clean state
-          return Promise.reject(error);
-      }
       
       // 2. Set the retry flag and queue the request
       originalRequest._retry = true;
@@ -91,7 +86,7 @@ apiClient.interceptors.response.use(
           isRefreshing = false;
           // Force logout for all pending requests in the queue
           processQueue(refreshError as AxiosError);
-          // Redirect the user on failure
+          // If refresh fails, force immediate redirect
           window.location.href = '/login'; 
           return Promise.reject(refreshError);
         }
