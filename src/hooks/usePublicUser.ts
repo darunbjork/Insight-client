@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { userApi } from '../api/user.api';
-import { User } from '../types/models.types';
+import type { User } from '../types/models.types';
 
 const PUBLIC_USER_QUERY_KEY = 'publicUser';
 

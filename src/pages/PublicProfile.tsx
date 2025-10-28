@@ -1,26 +1,29 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { Layout } from '../components/layout/Layout';
+// ... existing imports
+import { PostFeed } from '../components/posts/PostFeed'; // Import PostFeed
+import { useAuth } from '../hooks/useAuth';
 import { usePublicProfile } from '../hooks/usePublicUser';
 import { Spinner } from '../components/ui/Spinner';
-import { useAuth } from '../hooks/useAuth';
 import { formatDate } from '../utils/dateFormatter';
+import { Layout } from '../components/layout/Layout';
 
 /**
- * 👤 PublicProfile: Displays the profile of any user.
+ * 👤 PublicProfile: Displays the profile of any user and their posts.
  */
 export const PublicProfile: React.FC = () => {
   const { id: userId } = useParams<{ id: string }>();
   const { user: currentUser } = useAuth();
   
+  // ... redirect/loading/error logic remains the same ...
+
   const { 
     data: publicUser, 
     isLoading, 
-    isError, 
-  } = usePublicProfile(userId!);
+    isError  } = usePublicProfile(userId!);
 
   // Redirect to own profile page if viewing self
-  if (currentUser?.id === userId) {
+  if (currentUser?._id === userId) {
     return <Navigate to="/profile" replace />;
   }
 
@@ -42,10 +45,13 @@ export const PublicProfile: React.FC = () => {
       </Layout>
     );
   }
+  
+  if (!publicUser) return <Navigate to="/" replace />; // Safety redirect
 
   return (
     <Layout>
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+        {/* ... Profile Header (Avatar, Username, Member Since) ... */}
         <div className="flex items-center space-x-6 border-b pb-6 mb-6">
           <img
             src={publicUser.avatar || '/default-avatar.png'}
@@ -62,14 +68,12 @@ export const PublicProfile: React.FC = () => {
           </div>
         </div>
         
-        {/* Placeholder for future user's posts/feed */}
+        {/* NEW: User-Specific Posts Feed */}
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
             {publicUser.username}'s Posts
           </h2>
-          <div className="p-8 bg-gray-50 rounded-lg text-center text-gray-600">
-            Posts by this user coming soon (Day 9 feature extension).
-          </div>
+          <PostFeed userId={publicUser._id} /> {/* Pass the userId to filter the feed */}
         </div>
       </div>
     </Layout>

@@ -9,16 +9,21 @@ const POSTS_QUERY_KEY = 'posts';
 const POST_DETAIL_QUERY_KEY = 'post';
 
 /**
- * 🚀 usePosts: Handles fetching the paginated post feed.
+ * 🚀 usePosts: Handles fetching the paginated post feed for all users or a specific user.
  * Solves: Caching, loading/error states, and pagination state complexity.
  */
-export const usePosts = (page: number, limit: number = 10) => {
+export const usePosts = (page: number, limit: number = 10, userId?: string) => {
+  const queryKey = userId ? [POSTS_QUERY_KEY, 'user', userId, page] : [POSTS_QUERY_KEY, page];
+  const queryFn = userId
+    ? () => postsApi.getByUserId(userId, page, limit)
+    : () => postsApi.getAll(page, limit);
+
   return useQuery<PaginatedResponse<Post>>({
-    // QueryKey must be an array, and the page number must be included for independent caching
-    queryKey: [POSTS_QUERY_KEY, page], 
-    queryFn: () => postsApi.getAll(page, limit),
+    queryKey,
+    queryFn,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     placeholderData: keepPreviousData,
+    enabled: !userId || !!userId,
   });
 };
 
@@ -66,7 +71,7 @@ export const useLikePost = (postId: string) => {
         return {
           ...old,
           data: old.data.map(p => 
-            p.id === postId ? { 
+            p._id === postId ? { 
                 ...p, 
                 isLiked: !p.isLiked, // Toggle liked state
                 likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1 

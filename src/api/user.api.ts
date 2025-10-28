@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import { User } from '../types/models.types';
+import type { User } from '../types/models.types';
 
 // We define a PublicUser type that is typically a subset of User,
 // but for simplicity, we use the full User type here, assuming the backend

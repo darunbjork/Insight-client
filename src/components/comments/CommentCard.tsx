@@ -17,7 +17,7 @@ export const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
       />
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline space-x-2 text-sm">
-          <Link to={`/user/${comment.author.id}`} className="font-semibold text-gray-800 hover:text-blue-600">
+          <Link to={`/user/${comment.author._id}`} className="font-semibold text-gray-800 hover:text-blue-600">
             {comment.author.username}
           </Link>
           <span className="text-gray-500">•</span>
