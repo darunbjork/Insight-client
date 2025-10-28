@@ -1,50 +1,52 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, MutationCache, QueryCache } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import toast, { Toaster } from 'react-hot-toast';
-import App from './App.tsx';
+import { AuthProviderWithRouter } from './contexts/AuthProviderWithRouter';
+import Router from './router';
 import './index.css';
-import { parseApiError } from './utils/errorHandler.ts';
-import axios from 'axios';
+import { parseApiError } from './utils/errorHandler';
 
-// 5-minute cache time for queries by default
+// 1. Global React Query Configuration
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      const message = parseApiError(error);
+      toast.error(message, {
+        id: 'query-error', // Prevent multiple identical toasts
+      });
+    },
+  }),
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      const message = parseApiError(error);
+      toast.error(message, {
+        id: 'mutation-error',
+      });
+    },
+  }),
   defaultOptions: {
     queries: {
-      retry: (failureCount, error) => {
-        // Do not retry on 401/403 (Authentication/Authorization errors)
-        if (axios.isAxiosError(error)) {
-          const status = error.response?.status;
-          if (status === 401 || status === 403) return false;
-        }
-        return failureCount < 3; // Retry other errors up to 3 times
-      },
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    },
-    mutations: {
-      onError: (error) => {
-        // Centralized error handling for all mutations
-        const message = parseApiError(error);
-        console.error('Mutation Error:', error);
-        // Using react-hot-toast for user-facing notifications
-        // We configure this globally so components don't need to manually implement toast
-        if (message) {
-            toast.error(message);
-        }
-      },
+      retry: 1, // Retry failed queries once
+      staleTime: 1000 * 10, // Default 10 seconds stale time
     },
   },
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <App />
-        {/* Global Toast notifications container */}
-        <Toaster position="top-right" />
-      </QueryClientProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProviderWithRouter>
+          <Router />
+        </AuthProviderWithRouter>
+      </BrowserRouter>
+      {/* Toaster for all toast messages */}
+      <Toaster position="top-right" reverseOrder={false} />
+      {/* Devtools (Production check recommended) */}
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    </QueryClientProvider>
   </React.StrictMode>,
 );
