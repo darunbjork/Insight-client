@@ -16,6 +16,7 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
+  console.log('Button component rendered'); // Debugging line
   // Construct the class names based on variant and loading state
   const baseClass = 'btn';
   const variantClass = `btn--${variant}`;
@@ -25,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`${baseClass} ${variantClass} ${isDisabled ? 'disabled' : ''} ${className}`}
+      className={`${baseClass} ${variantClass} ${className}`}
       disabled={isDisabled}
       {...props}
     >
