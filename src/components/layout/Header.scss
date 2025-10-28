@@ -1,0 +1,46 @@
+.app-header {
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .header-content {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .header-username {
+      color: #4b5563;
+      text-decoration: none;
+      &:hover {
+        color: #2563eb;
+      }
+    }
+
+    .header-link {
+      color: #2563eb;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

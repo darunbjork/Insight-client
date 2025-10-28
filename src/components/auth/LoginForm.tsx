@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import type { LoginPayload } from '../../types/api.types';
 import { parseApiError } from '../../utils/errorHandler';
 import toast from 'react-hot-toast';
+import './LoginForm.scss'; // Import the SCSS file
 
 // 1. Zod Schema for Client-side Validation
 const loginSchema = z.object({
@@ -35,7 +36,7 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="login-form">
       <Input
         label="Email"
         type="email"
@@ -52,7 +53,7 @@ export const LoginForm: React.FC = () => {
       />
       <Button 
         type="submit" 
-        className="w-full"
+        className="w-full" // Keep w-full for now, it will be overridden by SCSS
         isLoading={isSubmitting}
       >
         Sign In

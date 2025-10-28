@@ -1,0 +1,42 @@
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 150ms;
+  cursor: pointer;
+  border: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.6);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background-color: #2563eb;
+    color: white;
+    &:hover {
+      background-color: #1d4ed8;
+    }
+  }
+
+  &--secondary {
+    background-color: #e5e7eb;
+    color: #1f2937;
+    &:hover {
+      background-color: #d1d5db;
+    }
+  }
+
+  &--danger {
+    background-color: #dc2626;
+    color: white;
+    &:hover {
+      background-color: #b91c1c;
+    }
+  }
+}
