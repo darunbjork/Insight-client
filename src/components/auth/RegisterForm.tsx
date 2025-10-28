@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import type { RegisterPayload } from '../../types/api.types';
 import { parseApiError } from '../../utils/errorHandler';
 import toast from 'react-hot-toast';
+import './RegisterForm.scss'; // Import the SCSS file
 
 // 1. Zod Schema for Client-side Validation
 const registerSchema = z.object({
@@ -35,7 +36,7 @@ export const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="register-form">
       <Input
         label="Username"
         type="text"
@@ -59,7 +60,7 @@ export const RegisterForm: React.FC = () => {
       />
       <Button 
         type="submit" 
-        className="w-full"
+        className="w-full" // Keep w-full for now, it will be overridden by SCSS
         isLoading={isSubmitting}
       >
         Create Account

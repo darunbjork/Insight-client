@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import toast, { Toaster } from 'react-hot-toast';
 import { AuthProviderWithRouter } from './contexts/AuthProviderWithRouter';
 import Router from './router';
-import './index.css';
+import './index.scss';
 import { parseApiError } from './utils/errorHandler';
 
 // 1. Global React Query Configuration

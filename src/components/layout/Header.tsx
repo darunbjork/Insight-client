@@ -3,22 +3,23 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
 import { Spinner } from '../ui/Spinner';
+import './Header.scss'; // Import the SCSS file
 
 export const Header: React.FC = () => {
   const { user, isLoading, logout } = useAuth();
 
   return (
-    <header className="bg-white shadow-md p-4 sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-blue-600">
+    <header className="app-header">
+      <div className="header-content">
+        <Link to="/" className="header-logo">
           ThoughtStream
         </Link>
         
         {isLoading ? (
           <Spinner />
         ) : user ? (
-          <nav className="flex items-center space-x-4">
-            <Link to="/profile" className="text-gray-700 hover:text-blue-600">
+          <nav className="header-nav">
+            <Link to="/profile" className="header-username">
               {user.username}
             </Link>
             <Button variant="secondary" onClick={logout}>
@@ -26,8 +27,8 @@ export const Header: React.FC = () => {
             </Button>
           </nav>
         ) : (
-          <nav className="space-x-4">
-            <Link to="/login" className="text-blue-600 hover:underline">
+          <nav className="header-nav">
+            <Link to="/login" className="header-link">
               Login
             </Link>
             <Link to="/register">

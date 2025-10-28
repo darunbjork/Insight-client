@@ -3,6 +3,7 @@ import { PostCard } from './PostCard';
 import { usePosts } from '../../hooks/usePosts';
 import { Spinner } from '../ui/Spinner';
 import { Button } from '../ui/Button';
+import './PostFeed.scss'; // Import the SCSS file
 
 
 interface PostFeedProps {
@@ -32,7 +33,7 @@ export const PostFeed: React.FC<PostFeedProps> = ({ userId }) => {
 
   if (isError) {
     return (
-      <div className="text-center p-10 text-red-600 bg-red-50 rounded-lg">
+      <div className="post-feed-error">
         <h2 className="font-bold text-xl">Error Loading Feed</h2>
         <p>There was an issue fetching posts. ({error?.message})</p>
       </div>
@@ -42,7 +43,7 @@ export const PostFeed: React.FC<PostFeedProps> = ({ userId }) => {
   // Show a full spinner only on the initial load (isLoading is true)
   if (isLoading && !isPlaceholderData) {
     return (
-      <div className="flex justify-center items-center h-48">
+      <div className="post-feed-loading">
         <Spinner />
       </div>
     );
@@ -50,7 +51,7 @@ export const PostFeed: React.FC<PostFeedProps> = ({ userId }) => {
   // Show message if no posts are available (context-aware message)
   if (posts.length === 0) {
     return (
-      <div className="text-center p-10 text-gray-600 bg-gray-50 rounded-lg">
+      <div className="post-feed-empty">
         <h2 className="font-bold text-xl">
           {userId ? "This user hasn't shared any thoughts yet." : "No Posts Found"}
         </h2>
@@ -60,16 +61,16 @@ export const PostFeed: React.FC<PostFeedProps> = ({ userId }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="post-feed-container">
       {/* ... rendering posts and pagination controls remains identical ... */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
+      <div className="post-grid">
         {posts.map((post) => (
           <PostCard key={post._id} post={post} />
         ))}
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-between items-center border-t pt-4">
+      <div className="pagination-controls">
         {/* ... (buttons remain the same) ... */}
         <Button
           onClick={() => setPage(p => p - 1)}
@@ -79,7 +80,7 @@ export const PostFeed: React.FC<PostFeedProps> = ({ userId }) => {
           Previous Page
         </Button>
 
-        <span className="text-gray-600">
+        <span className="pagination-page-info">
           Page {page} of {totalPages} {isFetching && isPlaceholderData && <Spinner />}
         </span>
 
