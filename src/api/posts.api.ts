@@ -56,4 +56,10 @@ export const postsApi = {
   toggleLike: (postId: string) => 
     apiClient.post<{ post: Post }>(`/posts/${postId}/like`)
       .then(res => res.data.post),
+  
+  // NEW: GET /api/v1/posts?userId=...
+  getByUserId: (userId: string, page: number, limit: number = 10) =>
+    apiClient.get<PaginatedResponse<Post>>('/posts', { 
+      params: { page, limit, userId } // Pass the userId as a query parameter
+    }).then(res => res.data),
 };

@@ -8,6 +8,7 @@ import { Spinner } from '../components/ui/Spinner';
 import { CommentList } from '../components/comments/CommentList'; // New
 import { CommentForm } from '../components/comments/CommentForm'; // New
 import { formatDate } from '../utils/dateFormatter';
+import { PostActions } from '../components/posts/PostActions';
 
 /**
  * 📰 PostDetail: Fetches and displays a single post and its comments.

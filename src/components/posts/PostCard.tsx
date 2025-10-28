@@ -30,7 +30,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           alt={post.author.username} 
           className="w-8 h-8 rounded-full object-cover"
         />
-        <Link to={`/user/${post.author.id}`} className="font-semibold text-blue-600 hover:text-blue-700">
+        <Link to={`/user/${post.author._id}`} className="font-semibold text-blue-600 hover:text-blue-700">
           @{post.author.username}
         </Link>
         <span>•</span>

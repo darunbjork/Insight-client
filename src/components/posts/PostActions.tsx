@@ -1,5 +1,5 @@
 import React from 'react';
-import { Post } from '../../types/models.types';
+import type { Post } from '../../types/models.types';
 import { useAuth } from '../../hooks/useAuth';
 import { useLikePost, useDeletePost } from '../../hooks/usePosts';
 import { Button } from '../ui/Button';
@@ -19,15 +19,15 @@ export const PostActions: React.FC<PostActionsProps> = ({ post, isDetailPage = f
   const navigate = useNavigate();
   
   // Use post.id for mutation key
-  const likeMutation = useLikePost(post.id);
+  const likeMutation = useLikePost(post._id);
   const deleteMutation = useDeletePost();
 
-  const isAuthor = user?.id === post.author.id;
+  const isAuthor = user?._id === post.author._id;
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this post? This cannot be undone.')) {
       try {
-        await deleteMutation.mutateAsync(post.id);
+        await deleteMutation.mutateAsync(post._id);
         if (isDetailPage) {
           // Redirect to the main feed after deleting from the detail page
           navigate('/');

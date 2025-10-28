@@ -54,7 +54,7 @@ export const CommentList: React.FC = () => {
       ) : (
         <div className="divide-y divide-gray-100">
           {comments.map(comment => (
-            <CommentCard key={comment.id} comment={comment} />
+            <CommentCard key={comment._id} comment={comment} />
           ))}
         </div>
       )}

@@ -1,22 +1,11 @@
 import React from 'react';
 import { Layout } from '../components/layout/Layout';
-import { useAuth } from '../hooks/useAuth';
-import { Spinner } from '../components/ui/Spinner';
-import { PostFeed } from '../components/posts/PostFeed'; // New import
-import { CreatePostForm } from '../components/posts/CreatePostForm'; // New import
+// ... existing imports ...
+import { PostFeed } from '../components/posts/PostFeed';
+import { CreatePostForm } from '../components/posts/CreatePostForm';
 
 export const Feed: React.FC = () => {
-  const { isLoading } = useAuth();
-  
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="h-48 flex justify-center items-center">
-          <Spinner />
-        </div>
-      </Layout>
-    );
-  }
+  // ... loading check ...
 
   return (
     <Layout>
@@ -26,10 +15,10 @@ export const Feed: React.FC = () => {
           <CreatePostForm />
         </div>
         
-        {/* Main Column (Post Feed) */}
+        {/* Main Column (Global Post Feed) */}
         <div className="lg:col-span-2 lg:order-2 order-1">
           <h1 className="text-3xl font-semibold text-gray-900 mb-6">Global Feed</h1>
-          <PostFeed />
+          <PostFeed /> {/* Pass no userId, defaults to global feed */}
         </div>
       </div>
     </Layout>

@@ -15,7 +15,7 @@ export interface Post {
   content: string;
   imageUrl?: string;
   author: {
-    id: string;
+    _id: string;
     username: string;
     avatar?: string;
   };  likeCount: number;
@@ -27,11 +27,11 @@ export interface Post {
 }
 
 export interface Comment {
-  id: string;
+  _id: string;
   content: string;
   postId: string;
   author: {
-    id: string;
+    _id: string;
     username: string;
     avatar?: string;
   };
