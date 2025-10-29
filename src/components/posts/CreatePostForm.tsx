@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useImageInput } from '../../hooks/useImageInput';
 import type { CreatePostPayload } from '../../types/api.types';
 import toast from 'react-hot-toast';
+import './CreatePostForm.scss';
 
 // 1. Zod Schema
 const postSchema = z.object({
@@ -56,13 +57,14 @@ export const CreatePostForm: React.FC = () => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 mb-8">
       <h2 className="text-xl font-bold mb-4 text-gray-800">Share Your Thoughts</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
           placeholder="Title (e.g., My first post)"
           error={errors.title?.message}
           {...register('title')}
           className="text-lg"
         />
+        <br />
         <textarea
           placeholder="What's on your mind? (Minimum 10 characters)"
           rows={4}
@@ -71,7 +73,7 @@ export const CreatePostForm: React.FC = () => {
           {...register('content')}
         />
         {errors.content && <p className="mt-1 text-sm text-red-500" role="alert">{errors.content.message}</p>}
-
+<br />
         {/* IMAGE UPLOAD SECTION */}
         <div className="flex items-center space-x-4">
           <label className="block text-sm font-medium text-gray-700">Image:</label>
@@ -79,8 +81,9 @@ export const CreatePostForm: React.FC = () => {
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            className="file-input"
           />
+          <br />
           {hasFile && (
             <Button type="button" variant="danger" onClick={clearFile} className="flex-shrink-0">
               Remove

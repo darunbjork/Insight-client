@@ -72,15 +72,16 @@ export const ProfileForm: React.FC = () => {
         {...register('email')}
         disabled={isSubmitting}
       />
-      
-      <Button 
-        type="submit" 
-        className="w-full"
-        isLoading={isSubmitting}
-        disabled={!isDirty || isSubmitting} // Disable if no changes or submitting
-      >
-        Save Changes
-      </Button>
+         <br />
+      <div className="flex justify-between items-center mt-8">
+        <Button 
+          type="submit" 
+          isLoading={isSubmitting}
+          disabled={!isDirty || isSubmitting}
+        >
+          Save Changes
+        </Button>
+      </div>
     </form>
   );
 };

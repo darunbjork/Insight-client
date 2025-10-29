@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useDropzone, type FileRejection } from 'react-dropzone';
 import { useAuth } from '../../hooks/useAuth';
 import { useUploadAvatar } from '../../hooks/useUser';
+import './AvatarUpload.scss';
 import toast from 'react-hot-toast';
 
 export const AvatarUpload: React.FC = () => {
@@ -52,11 +53,11 @@ export const AvatarUpload: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 avatar-container">
         <img
           src={avatarUrl || '/default-avatar.png'} // Use a default image if none exists
           alt={`${user?.username}'s avatar`}
-          className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
+          className="rounded-full object-cover border-4 border-white shadow-md"
         />
         <div
           {...getRootProps(style)}

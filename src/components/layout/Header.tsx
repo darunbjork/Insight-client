@@ -19,8 +19,11 @@ export const Header: React.FC = () => {
           <Spinner />
         ) : user ? (
           <nav className="header-nav">
-            <Link to="/profile" className="header-username">
-              {user.username}
+            <Link to="/" className="header-link">
+              Feed
+            </Link>
+            <Link to="/profile" className="header-username profile-link">
+              Profile
             </Link>
             <Button variant="secondary" onClick={logout}>
               Logout

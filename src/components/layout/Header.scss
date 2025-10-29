@@ -27,20 +27,32 @@
     align-items: center;
     gap: 1rem;
 
+    .header-link,
     .header-username {
-      color: #4b5563;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
       text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
       &:hover {
-        color: #2563eb;
+        background-color: #eff6ff;
+        color: #1d4ed8;
       }
     }
 
     .header-link {
       color: #2563eb;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
+      background-color: transparent;
+    }
+
+    .header-username {
+      color: #4b5563;
+      background-color: transparent;
+    }
+
+    .profile-link {
+      margin-left: 1rem;
     }
   }
 }
