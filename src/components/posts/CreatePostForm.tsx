@@ -64,7 +64,6 @@ export const CreatePostForm: React.FC = () => {
           {...register('title')}
           className="text-lg"
         />
-        <br />
         <textarea
           placeholder="What's on your mind? (Minimum 10 characters)"
           rows={4}
@@ -73,27 +72,28 @@ export const CreatePostForm: React.FC = () => {
           {...register('content')}
         />
         {errors.content && <p className="mt-1 text-sm text-red-500" role="alert">{errors.content.message}</p>}
-<br />
+
         {/* IMAGE UPLOAD SECTION */}
-        <div className="flex items-center space-x-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">Image:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="file-input"
-          />
-          <br />
-          {hasFile && (
-            <Button type="button" variant="danger" onClick={clearFile} className="flex-shrink-0">
-              Remove
-            </Button>
-          )}
+          <div className="mt-1 flex items-center space-x-4">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="file-input"
+            />
+            {hasFile && (
+              <Button type="button" variant="danger" onClick={clearFile} className="flex-shrink-0">
+                Remove
+              </Button>
+            )}
+          </div>
         </div>
 
         {preview && (
-          <div className="mt-2">
-            <img src={preview} alt="Post preview" className="max-h-60 rounded-lg object-cover w-full" />
+          <div className="image-preview">
+            <img src={preview} alt="Post preview" />
           </div>
         )}
 

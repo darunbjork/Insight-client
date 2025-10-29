@@ -23,7 +23,6 @@
     "react-hook-form": "^7.65.0",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.9.4",
-    "sass": "^1.93.2",
     "tailwindcss": "^4.1.16",
     "vite": "^7.1.12",
     "zod": "^4.1.12"
@@ -41,6 +40,7 @@
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
     "postcss-nested": "^7.0.2",
+    "sass": "^1.93.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0"
   },
